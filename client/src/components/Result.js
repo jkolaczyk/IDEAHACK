@@ -1,4 +1,5 @@
 import React from 'react'
+import Dialog from './Dialog.js'
 
 const Result = (props) => {
 
@@ -14,7 +15,9 @@ const Result = (props) => {
     // }
 
     const mappedResults = sliced.map((result, i) => {
-        return <li className='text-primary' key={i}>{result.position}</li>
+        console.log(result)
+        // return <li className='text-primary' key={i}>{result.position}</li>
+        return <li className='text-primary' key={i}><Dialog result={result}></Dialog></li>
     })
     // const mappedResults = chunked.map((arr, i) => {
     //     return(
@@ -29,7 +32,7 @@ const Result = (props) => {
     return(
         <div className="result shadow-lg text-center">
             <h4 className='suitable'>Recommended job:</h4>
-            <h3 className='text-success'>{results[0].position}</h3>
+            <h3 className='text-success'><Dialog result={results[0]}></Dialog></h3>
             <h4 className='other'>Other suitable jobs:</h4>
             <ul className='text-center other-ul'>
                 {mappedResults}

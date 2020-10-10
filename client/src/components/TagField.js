@@ -7,7 +7,7 @@ const baseTagifySettings = {
     blacklist: [],
     maxTags: 15,
     backspace: "edit",
-    placeholder: "type something",
+    placeholder: "Input skills",
     editTags: 1,
     dropdown: {
         enabled: 0

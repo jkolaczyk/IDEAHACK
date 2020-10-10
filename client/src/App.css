@@ -13,7 +13,7 @@ form{
   /* font-family: 'Roboto', sans-serif; */
   width: 50%;
   margin: 0 auto;
-  padding-top: 100px;
+  padding-top: 10px !important;
   background-color: white;
   border-radius: 5px;
   padding: 40px;
@@ -48,6 +48,11 @@ ul{
   column-count: 3;
   padding: 0;
 }
+.dialog-ul{
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
+}
 .other-ul li{
   margin-bottom: 20px;
   /* font-size: 23px; */
@@ -60,4 +65,8 @@ ul{
   padding: .3em .5em !important;
   line-height: 1.1 !important;
   white-space: nowrap !important;
+}
+span.tagify__input{
+  width: 150px;
+  text-align: left;
 }
