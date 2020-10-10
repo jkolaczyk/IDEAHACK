@@ -70,8 +70,8 @@ def get_results_for_person(person_id):
 
     for index, row in df.iterrows():
 
-        if index % (df.shape[0]//100) == 0:
-            print (index//(df.shape[0]//100))
+        #if index % (df.shape[0]//100) == 0:
+        #    print (index//(df.shape[0]//100))
 
         job_skillset = row['skills_set']
 
