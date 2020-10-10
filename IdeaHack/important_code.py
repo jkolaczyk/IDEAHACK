@@ -4,7 +4,7 @@ import pickle
 from ast import literal_eval
 from math import sqrt
 from io import StringIO
-
+import json
 
 
 def load_db_to_memory():
@@ -67,6 +67,8 @@ def match_func_frequencies(person_skills, job_skills, freq_map):
 def skill_importance(skill_id):
     return 1.0/sqrt(freq_map[skill_id])
 
+
+
 def get_matches_for_skillsets(skillset, number_best=3, aspiration_skills=set(), NUM_LACKING_SKILLS=5, NUM_MATCHING_SKILLS=5):
     jobs = []
 
@@ -105,6 +107,11 @@ def get_matches_for_skillsets(skillset, number_best=3, aspiration_skills=set(), 
         best_matches[i].pop('skillset', None)
         
     return best_matches
+
+def get_suggestions_arr():
+    c.execute('select ID, preferredLabel FROM skills_en')
+    return [{'id':row[0], 'name':row[1]} for row in c.fetchall()]
+
 
 def get_results_for_person(person_id):
     ps = person_id_to_skillset(person_id)
