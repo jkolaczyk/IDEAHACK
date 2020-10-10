@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1650" height="731" viewBox="0 0 1650 731">
+    <defs>
+        <path id="a" d="M0 0h1661v852H0z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(-10 -93)">
+        <mask id="b" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <path stroke="#979797" d="M.5.5h1660v851H.5z"/>
+        <g mask="url(#b)">
+            <path stroke="#EDEEF2" stroke-linecap="square" d="M52 800l120-412-44-215"/>
+            <g stroke="#BDC1CF" stroke-dasharray="2,4">
+                <path d="M126 357H10M126 351H10M126 345H10M126 339H10M126 333H10M126 327H10"/>
+            </g>
+            <g transform="rotate(180 315.5 412)">
+                <circle cx="458" cy="62" r="7" fill="#1DE97E"/>
+                <circle cx="423" cy="723" r="7" fill="#DCDFE6"/>
+                <circle cx="585" cy="14" r="14" fill="#CCCFDA"/>
+                <circle cx="503" cy="651" r="7" fill="#FED43A"/>
+            </g>
+            <g>
+                <path stroke="#EDEEF2" stroke-linecap="square" d="M1599 793l-42-27 63-405-49-256"/>
+                <g stroke="#BDC1CF" stroke-dasharray="2,4">
+                    <path d="M1545 487h-74M1545 493h-74M1545 499h-74M1545 505h-74M1545 511h-74M1545 517h-74"/>
+                    <g>
+                        <path d="M1661 447h-231M1661 453h-231M1661 459h-231M1661 465h-231M1661 471h-231M1661 477h-231"/>
+                    </g>
+                    <g>
+                        <path d="M1656 341h-74M1656 347h-74M1656 353h-74M1656 359h-74M1656 365h-74M1656 371h-74"/>
+                    </g>
+                    <g>
+                        <path d="M1610 667h-34M1610 673h-34M1610 679h-34M1610 685h-34M1610 691h-34M1610 697h-34"/>
+                    </g>
+                </g>
+                <g transform="matrix(-1 0 0 1 1627 93)">
+                    <circle cx="70" cy="673" r="14" fill="#31BDFF"/>
+                    <circle cx="56" cy="7" r="7" fill="#1DE97E"/>
+                    <circle cx="28" cy="700" r="7" fill="#FF537D"/>
+                    <circle cx="7" cy="268" r="7" fill="#DCDFE6"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
