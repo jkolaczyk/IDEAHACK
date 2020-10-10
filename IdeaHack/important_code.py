@@ -3,9 +3,29 @@ import pandas as pd
 import pickle
 from ast import literal_eval
 from math import sqrt
+from io import StringIO
 
-conn = sqlite3.connect("database.db")
-c = conn.cursor()
+
+
+def load_db_to_memory():
+    con = sqlite3.connect("database.db")
+    tempfile = StringIO()
+    for line in con.iterdump():
+        tempfile.write('%s\n' % line)
+    con.close()
+    tempfile.seek(0)
+
+    # Create a database in memory and import from tempfile
+    conn = sqlite3.connect(":memory:")
+    conn.cursor().executescript(tempfile.read())
+    conn.commit()
+    return conn
+
+def get_skill_names_map():
+    c.execute('SELECT skills_en.ID, skills_en.preferredLabel FROM skills_en')
+    res = c.fetchall()
+    names_map = {row[0]: row[1] for row in res} 
+    return names_map
 
 def get_frequency_map():
     c.execute(' SELECT skills_en.ID, count(skills_en.ID) \
@@ -21,7 +41,7 @@ def label_transform_sql(lbl):
     c.execute('SELECT ID FROM skills_en WHERE preferredLabel=?', (lbl,))
     return c.fetchall()[0][0]
 
-def label_inverse_transform(ID):
+def skill_id_to_name(ID):
     c.execute('SELECT preferredLabel FROM skills_en WHERE ID=?', (ID,))
     return c.fetchall()[0][0]
 
@@ -44,17 +64,35 @@ def match_func_frequencies(person_skills, job_skills, freq_map):
         match_quality += 1.0/sqrt(freq_map[skill_id])
     return match_quality
 
-
-df = pickle.load(open( "df.pickle", "rb" ))
-freq_map = get_frequency_map()
-
 def get_results_for_person(person_id):
     ps = person_id_to_skillset(person_id)
     jobs = []
 
     for index, row in df.iterrows():
+
+        if index % (df.shape[0]//100) == 0:
+            print (index//(df.shape[0]//100))
+
         job_skillset = row['skills_set']
-        jobs.append([match_func_frequencies(ps, job_skillset, freq_map), row['occupation_name']])
+
+        match_quality = 0
+        matching_skills = []
+
+        for skill_id in ps.intersection(job_skillset):
+            mq = 1.0/sqrt(freq_map[skill_id])
+            matching_skills.append([mq, skill_id])
+            match_quality += mq
+        
+        matching_skills.sort(key=lambda x : x[0], reverse=True)
+        matching_skills = [skill_names_map[a[1]] for a in matching_skills]
+
+        #lacking_skills = []
+        lacking_skills = [[1.0/sqrt(freq_map[skill_id]), skill_names_map[skill_id]] for skill_id in job_skillset - ps if skill_id in freq_map]
+        lacking_skills.sort(key=lambda x : x[0], reverse=True)
+        lacking_skills = [a[1] for a in lacking_skills]
+        
+
+        jobs.append([match_func_frequencies(ps, job_skillset, freq_map), row['occupation_name'], matching_skills[:5], lacking_skills[:5]])
         
         #old matching function
         #jobs.append([ic.match_func(ps, job_skillset), row['occupation_name']])
@@ -64,3 +102,11 @@ def get_results_for_person(person_id):
 
     return jobs[:10]
 
+conn = load_db_to_memory()
+c = conn.cursor()
+df = pickle.load(open( "df.pickle", "rb" ))
+freq_map = get_frequency_map()
+skill_names_map = get_skill_names_map()
+
+if __name__ == "__main__":
+    print(get_results_for_person(10)[0])
