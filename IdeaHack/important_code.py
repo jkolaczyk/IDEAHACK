@@ -64,8 +64,10 @@ def match_func_frequencies(person_skills, job_skills, freq_map):
         match_quality += 1.0/sqrt(freq_map[skill_id])
     return match_quality
 
-def get_results_for_person(person_id):
-    ps = person_id_to_skillset(person_id)
+def skill_importance(skill_id):
+    return 1.0/sqrt(freq_map[skill_id])
+
+def get_matches_for_skillsets(skillset, number_best=3, aspiration_skills=set(), NUM_LACKING_SKILLS=5, NUM_MATCHING_SKILLS=5):
     jobs = []
 
     for index, row in df.iterrows():
@@ -78,29 +80,35 @@ def get_results_for_person(person_id):
         match_quality = 0
         matching_skills = []
 
-        for skill_id in ps.intersection(job_skillset):
-            mq = 1.0/sqrt(freq_map[skill_id])
+        for skill_id in skillset.intersection(job_skillset):
+            mq = skill_importance(skill_id)
             matching_skills.append([mq, skill_id])
             match_quality += mq
         
         matching_skills.sort(key=lambda x : x[0], reverse=True)
         matching_skills = [skill_names_map[a[1]] for a in matching_skills]
 
-        #lacking_skills = []
-        lacking_skills = [[1.0/sqrt(freq_map[skill_id]), skill_names_map[skill_id]] for skill_id in job_skillset - ps if skill_id in freq_map]
-        lacking_skills.sort(key=lambda x : x[0], reverse=True)
-        lacking_skills = [a[1] for a in lacking_skills]
-        
-
-        jobs.append([match_func_frequencies(ps, job_skillset, freq_map), row['occupation_name'], matching_skills[:5], lacking_skills[:5]])
-        
-        #old matching function
-        #jobs.append([ic.match_func(ps, job_skillset), row['occupation_name']])
+        jobs.append({'match_quality':match_quality, 'position':row['occupation_name'], 'skillset':job_skillset, 'matching_skills':matching_skills[:NUM_MATCHING_SKILLS]})
 
     #sort by biggest matching score first
-    jobs.sort(key=lambda x : x[0], reverse=True)
+    jobs.sort(key=lambda x : x['match_quality'], reverse=True)
+    best_matches = jobs[:number_best]
 
-    return jobs[:10]
+    for i, bm in enumerate(best_matches):
+        job_skillset = bm['skillset']
+
+        lacking_skills = [[skill_importance(skill_id), skill_names_map[skill_id]] for skill_id in job_skillset - skillset if skill_id in freq_map]
+        lacking_skills.sort(key=lambda x : x[0], reverse=True)
+        lacking_skills = [a[1] for a in lacking_skills[:NUM_LACKING_SKILLS]]
+
+        best_matches[i]['lacking_skills'] = lacking_skills
+        best_matches[i].pop('skillset', None)
+        
+    return best_matches
+
+def get_results_for_person(person_id):
+    ps = person_id_to_skillset(person_id)
+    return get_matches_for_skillsets(ps)
 
 conn = load_db_to_memory()
 c = conn.cursor()
