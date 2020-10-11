@@ -69,18 +69,20 @@ def skill_importance(skill_id):
 
 
 
-def get_matches_for_skillsets(skillset, number_best=3, aspiration_skills=set(), NUM_LACKING_SKILLS=5, NUM_MATCHING_SKILLS=5):
+def get_matches_for_skillsets(skillset, number_best=10, aspiration_skills=set(), NUM_LACKING_SKILLS=5, NUM_MATCHING_SKILLS=5):
     jobs = []
 
     for index, row in df.iterrows():
-
-        #if index % (df.shape[0]//100) == 0:
-        #    print (index//(df.shape[0]//100))
-
         job_skillset = row['skills_set']
 
         match_quality = 0
         matching_skills = []
+
+        if aspiration_skills and not job_skillset.intersection(aspiration_skills):
+            #skip all jobs which do not teach anything
+            continue
+        else:
+            print(row['occupation_name'] + " has an aspiration skill")
 
         for skill_id in skillset.intersection(job_skillset):
             mq = skill_importance(skill_id)
@@ -124,4 +126,4 @@ freq_map = get_frequency_map()
 skill_names_map = get_skill_names_map()
 
 if __name__ == "__main__":
-    print(get_results_for_person(10)[0])
+    print(get_matches_for_skillsets(skillset=person_id_to_skillset(2), aspiration_skills={12140})[1])
