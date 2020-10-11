@@ -1,11 +1,72 @@
 main{
   padding-top: 100px;
-  height: 100vh;
+  margin-top: 30px;
+  height: calc(100vh - 30px);
   display: flex;
   flex-flow: column;
+  background-image: url('https://www.starmind.ai/hubfs/lp-bg.svg');
+}
+.heading{
+  margin-bottom: 100px;
 }
 form{
+  /* font-family: 'Roboto', sans-serif; */
   width: 50%;
   margin: 0 auto;
-  padding-top: 100px;
+  padding-top: 10px !important;
+  background-color: white;
+  border-radius: 5px;
+  padding: 40px;
+  padding-bottom: 20px;
+  margin-bottom: 50px;
+}
+form button{
+  width: 100px;
+  height: 37px;
+}
+.result{
+  background-color: white;
+  border-radius: 5px;
+  width: 70%;
+  margin: 0 auto;
+  padding: 40px;
+  margin-bottom: 30px;
+}
+.result .suitable{
+  margin-bottom: 20px;
+}
+.result .other{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+ul{
+  /* display: flex;
+  justify-content: space-between; */
+  list-style-type: none;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  padding: 0;
+}
+.dialog-ul{
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
+}
+.other-ul li{
+  margin-bottom: 20px;
+  /* font-size: 23px; */
+}
+.tagify__input{
+  flex-grow: 0 !important;
+  display: inline-block !important;
+  min-width: 0px !important;
+  padding: 0 !important;
+  padding: .3em .5em !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+span.tagify__input{
+  width: 150px;
+  text-align: left;
 }

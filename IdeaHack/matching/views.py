@@ -1,22 +1,32 @@
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render 
 from django.urls import reverse
-from django.contrib.auth.models import User
-from .models import *
-from .database import *
+from .important import *
+from django.views.decorators.csrf import csrf_exempt
+import requests  
+import json
 
+@csrf_exempt
+def person(request):
+	post = request.body.decode('ascii')
+	json_post = json.loads(post)
+	pk = json_post['number']
+	responseData = get_results_for_person(json_post['number'])
+	return JsonResponse(responseData, safe=False)
 
-def person(request, pk):
-	data = select_user_skills(pk)
-	responseData = {
-        'URIs': data,
-    }
-	return JsonResponse(data, safe=False)
-
-
-
-def index(request):
-	return HttpResponse(1)
+def suggestions(request):
+	return JsonResponse(get_suggestions_arr(), safe=False)
+	
+@csrf_exempt
+def skills(request):
+	post = request.body.decode('ascii')
+	json_post = json.loads(post)
+	skill_names = json_post['skills']
+	skills = set()
+	for skill in skill_names:
+		skills.add(label_transform_sql(skill))
+	responseData = get_matches_for_skillsets(skills)
+	return JsonResponse(responseData, safe=False)
 
 
 # Create your views here.
