@@ -7,18 +7,18 @@ import requests
 import json
 
 @csrf_exempt
-def person(request):
+def person(request): #returns information about recommended jobs for a given person
 	post = request.body.decode('ascii')
 	json_post = json.loads(post)
 	pk = json_post['number']
 	responseData = get_results_for_person(json_post['number'])
 	return JsonResponse(responseData, safe=False)
 
-def suggestions(request):
+def suggestions(request): #returns all skills to be suggested when user enters their skills on the app
 	return JsonResponse(get_suggestions_arr(), safe=False)
 	
 @csrf_exempt
-def skills(request):
+def skills(request): #returns information about recommended jobs for a given set of skills
 	post = request.body.decode('ascii')
 	json_post = json.loads(post)
 	skill_names = json_post['skills']
